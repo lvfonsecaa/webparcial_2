@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { RolesEntity } from './roles.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -30,7 +30,11 @@ export class RolesService {
     }
 
     async findAll(): Promise<RolesEntity[]> {
-        return await this.rolesRepository.find();
+        try {
+          return await this.rolesRepository.find();
+        } catch {
+          throw new InternalServerErrorException("Error al obtener roles");
+        }
     }
 
 }
