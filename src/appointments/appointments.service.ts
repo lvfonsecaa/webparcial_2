@@ -40,7 +40,11 @@ export class AppointmentsService {
         }
 
         const appointment = this.appointmentsRepository.create({
-          da
+          user: user,
+          doctor: doctor,
+          motivo: motivo.join(", "),
+          datetime: datetime.toISOString(),
+          status: "pending",
         });
 
         await this.appointmentsRepository.save(appointment);
