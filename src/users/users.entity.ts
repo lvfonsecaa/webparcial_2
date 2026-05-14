@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { RolesEntity } from '../roles/roles.entity';
 
-@Entity('users')
+@Entity()
 export class UsersEntity {
  @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -26,9 +26,9 @@ export class UsersEntity {
 //para la relacion con los roles
  @ManyToMany(() => RolesEntity, (role) => role.users)
  @JoinTable({
-  name: 'users_roles',
-  joinColumn: { name: 'user_id', referencedColumnName: 'id' },
-  inverseJoinColumn: { name: 'role_id', referencedColumnName: 'id' },
+  name: 'users_entity_roles_entity',
+  joinColumn: { name: 'users_entity_id', referencedColumnName: 'id' },
+  inverseJoinColumn: { name: 'roles_entity_id', referencedColumnName: 'id' },
  })
   roles: RolesEntity[];
 }
