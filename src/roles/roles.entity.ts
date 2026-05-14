@@ -8,8 +8,8 @@ export class RolesEntity {
 
  @Column({unique: true})
  role_name: string;
- //poner nullable:true?
- @Column()
+
+ @Column({ nullable: true })
  description: string;
 
  @ManyToMany(() => UsersEntity, (user) => user.roles)

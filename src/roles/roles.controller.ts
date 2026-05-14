@@ -11,7 +11,7 @@ export class RolesController{
         private rolesService: RolesService,
     ){}
 
-    @Roles()
+    @Roles('admin')
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Post('roles')
     async create(@Body() role: CreateRoleDto){

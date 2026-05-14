@@ -28,4 +28,5 @@ export class RolesService {
         const nuevoRol = this.rolesRepository.create(role)
         return this.rolesRepository.save(nuevoRol);
     }
+
 }

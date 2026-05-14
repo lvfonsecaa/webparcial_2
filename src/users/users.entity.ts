@@ -14,8 +14,7 @@ export class UsersEntity {
 
  @Column()
   name: string;
- //poner nullable:true?
- @Column()
+ @Column({ nullable: true })
   phone: string;
 
  @Column({default: true})

@@ -1,4 +1,5 @@
-import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable,
+} from '@nestjs/common';
 import { UsersEntity } from './users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -12,7 +13,7 @@ export type User = any;
 export class UsersService {
      constructor(
        @InjectRepository(UsersEntity)
-       private readonly usersRepository: Repository<UsersEntity>
+       private readonly usersRepository: Repository<UsersEntity>,
    ){}
 
    /** 
