@@ -6,9 +6,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RolesEntity } from './roles/roles.entity';
 import { UsersEntity } from './users/users.entity';
 import { AuthModule } from './auth/auth.module';
+import { AppointmentsModule } from './appointments/appointments.module';
 
 @Module({
-  imports: [UsersModule, RolesModule, TypeOrmModule.forRoot({
+  imports: [UsersModule, RolesModule, AppointmentsModule, TypeOrmModule.forRoot({
      type: 'postgres',
      host: process.env.DB_HOST ?? 'localhost',
      port: Number(process.env.DB_PORT ?? 5432),
