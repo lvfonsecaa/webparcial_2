@@ -1,7 +1,8 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class RegistroDto {
-  @IsEmail({}, { message: 'Email inválido' })
+  @IsString()
+  @IsNotEmpty()
   email: string;
 
   @IsString()
