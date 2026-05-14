@@ -1,10 +1,10 @@
-import { BadRequestException, ConflictException, Injectable,
-} from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, InternalServerErrorException, NotFoundException,} from '@nestjs/common';
 import { UsersEntity } from './users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { RegistroDto } from './dto/registro.dto';
+import { RolesEntity } from 'src/roles/roles.entity';
 
 
 export type User = any;
@@ -14,7 +14,11 @@ export class UsersService {
      constructor(
        @InjectRepository(UsersEntity)
        private readonly usersRepository: Repository<UsersEntity>,
-   ){}
+      
+       //para acceder a los roles
+       @InjectRepository(RolesEntity)
+       private readonly rolesRepository: Repository<RolesEntity>
+){}
 
    /** 
    private readonly users = [
@@ -57,5 +61,39 @@ export class UsersService {
       });
        
       return this.usersRepository.save(nuevoUsuario);
+  }
+
+  async assignRole(id: string, role_names: string[]): Promise <void> {
+    if(!Array.isArray(role_names) || role_names.length === 0 ){
+      throw new BadRequestException("roles inválidos")
+    }
+
+    const user = await this.usersRepository.findOne({
+      where: {id},
+      relations:{roles:true},
+    });
+
+    if(!user){
+      throw new NotFoundException("Usuario no encontrado")
+    }
+
+    const roles = await this.rolesRepository.find({
+      where: {role_name: In(role_names)}
+    })
+
+    if (roles.length !== role_names.length) {
+      throw new BadRequestException("roles inválidos");
+    }
+    user.roles = roles;
+    await this.usersRepository.save(user);
+  }
+
+  async findAll(): Promise<UsersEntity[]>{
+    try {
+      return await this.usersRepository.find({relations: {roles: true}});
+    } catch (error) {
+      throw new InternalServerErrorException ("Error al listar usuarios")
+    }
+
   }
 }

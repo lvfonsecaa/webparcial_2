@@ -29,7 +29,7 @@ export class RolesController{
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Get('roles')
     async findAll(){
-        return this.rolesService.findAll();
+        return this.rolesService.findAll()
     }
 
 }
