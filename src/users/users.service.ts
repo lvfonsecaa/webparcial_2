@@ -88,6 +88,13 @@ export class UsersService {
     await this.usersRepository.save(user);
   }
 
+  async findById(id: string): Promise<UsersEntity | null> {
+    return this.usersRepository.findOne({
+      where: { id },
+      relations: { roles: true },
+    });
+  }
+
   async findAll(): Promise<UsersEntity[]>{
     try {
       return await this.usersRepository.find({relations: {roles: true}});

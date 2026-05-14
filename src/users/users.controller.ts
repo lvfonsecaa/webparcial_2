@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Patch, UseGuards, Get } from "@nestjs/common";
+import { Body, Controller, Param, Patch, UseGuards, Get, Request, NotFoundException } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { Roles } from "src/auth/roles.decorator";
 import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
@@ -18,6 +18,24 @@ export class UsersController{
         return{
             message: 'Roles asignados',
         }
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get("users/me")
+    async me(@Request() req) {
+        const user = await this.usersService.findById(req.user.userId);
+
+        if (!user) {
+            throw new NotFoundException("Usuario no encontrado");
+        }
+
+        return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            phone: user.phone,
+            roles: user.roles.map((role) => role.role_name),
+        };
     }
 
     @Roles("admin")
