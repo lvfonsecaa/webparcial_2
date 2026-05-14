@@ -11,7 +11,7 @@ export class RolesService {
        private readonly rolesRepository: Repository<RolesEntity>
    ){}
 
-   async create(role: CreateRoleDto): Promise<RolesEntity> {
+    async create(role: CreateRoleDto): Promise<RolesEntity> {
         if (!role.role_name || role.role_name.trim() === ''){
           throw new BadRequestException("role_name es requerido");
         }
@@ -27,6 +27,10 @@ export class RolesService {
 
         const nuevoRol = this.rolesRepository.create(role)
         return this.rolesRepository.save(nuevoRol);
+    }
+
+    async findAll(): Promise<RolesEntity[]> {
+        return await this.rolesRepository.find();
     }
 
 }
